@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Getting started with KISSY</title>
+  <link rel="stylesheet" href="/bower_components/kissy/build/css/dpl/reset-min.css">
+  <link rel="stylesheet" href="/bower_components/kissy/build/css/dpl/base-min.css">
+  <link rel="stylesheet" href="/bower_components/kissy/build/button/assets/dpl-min.css">
+  <link rel="stylesheet" href="/css/common.css">
+</head>
+<body>
+<div class="container">
+  <section id="create-node">
+    <h2>Creating new node</h2>
+  </section>
+
+  <section id="event">
+    <h2>Using event</h2>
+    <form>
+      <button>Add prefix circle to following p tags</button>
+    </form>
+    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nulla, voluptas, explicabo, alias reiciendis consequuntur quas natus fuga ab id blanditiis asperiores cum nisi dolor vero mollitia sit laborum voluptates facere.</p>
+    <p>Lorem ipsum.</p>
+  </section> <!-- Using event -->
+
+  <section id="components">
+    <h2>We use official button component here! :)</h2>
+    <form> <!-- button should be placed here --> </form>
+  </section>
+</div>
+<script src="/bower_components/kissy/build/seed.js"></script>
+<script>
+  /**
+   * Creating new node
+   */
+  KISSY.use('node', function(S, Node) {
+    var el = new Node('<p>I am using KISSY, and <strong>this node</strong> is dynamicly added.</p>');
+    Node.one('#create-node').append(el);
+    el.addClass('prefix-circle');
+  });
+
+  /**
+   * Using event
+   */
+  KISSY.use('node', function(S, Node) {
+    Node.one('#event button').on('click', function(e) {
+      e.preventDefault();
+      Node.all('#event p').addClass('prefix-circle');
+    });
+  });
+
+  /**
+   * Using components
+   */
+  KISSY.use('button', function(S, Button) {
+    var btn = new Button({
+      content: '快来按我！',
+      render: '#components form',
+      tooltip: 'Hover有提示'
+    });
+    btn.render();
+  });
+</script>
+</body>
+</html>
