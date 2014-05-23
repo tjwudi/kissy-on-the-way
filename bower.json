@@ -1,0 +1,25 @@
+{
+  "name": "kissy-on-the-way",
+  "version": "0.0.0",
+  "authors": [
+    "John Wu <webmaster@leapoahead.com>"
+  ],
+  "description": "Learning kissy!",
+  "keywords": [
+    "kissy",
+    "learning",
+    "taobao"
+  ],
+  "license": "NONE",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "kissy": "~1.4.3"
+  }
+}
