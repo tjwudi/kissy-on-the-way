@@ -1,0 +1,148 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Experiment with KISSY.Base</title>
+</head>
+<body>
+
+<div class="container">
+  <section id="s-mix">
+    <header>
+      <h3>S.mix</h3>
+    </header>
+    <p>We have var singleton = {a : 1}. Before S.mix(singleton, { b : 2 })</p>
+    <pre><code id="s-mix-before"></code></pre>
+    <p>After S.mix(singleton, { b : 2 })</p>
+    <pre><code id="s-mix-after"></code></pre>
+    <p>See how it resolved confliction, S.mix(singleton, { a : 7 })</p>
+    <pre><code id="s-mix-conf"></code></pre>
+  </section>
+
+  <section id="s-extend">
+    <header>
+      <h3>S.extend</h3>
+    </header>
+    <pre><code id="s-extend-output"></code></pre>
+    <p>Extend Base</p>
+    <pre><code id="s-extend-base"></code></pre>
+  </section>
+
+  <section id="rich-extend">
+    <header>
+      <h3>Base.extend (what a mess)</h3>
+    </header>
+    <pre><code id="rich-extend-output"></code></pre>
+  </section>
+</div>
+
+<script src="http://g.tbcdn.cn/kissy/k/1.4.3/seed.js" data-config="{combine:true}"></script>
+<script>
+/**
+ * S.mix
+ */
+KISSY.use('node', function(S, Node) {
+  var singleton = {a : 1};
+  Node.one('#s-mix-before').html(JSON.stringify(singleton));
+  S.mix(singleton, { b : 2 });
+  Node.one('#s-mix-after').html(JSON.stringify(singleton));
+  S.mix(singleton, { a : 7 });
+  Node.one('#s-mix-conf').html(JSON.stringify(singleton));
+});
+
+/**
+ * Pet class
+ * @class Pet
+ */
+KISSY.add('Pet', function() {
+  function Pet(name) {
+    this.name = name;
+  };
+  Pet.prototype.walk = function() {
+    return this.name + ' is walking';
+  };
+  return Pet;
+});
+
+/**
+ * S.extend
+ */
+KISSY.use('node, Pet', function(S, Node, Pet) {
+  function Dog(name) {
+    Dog.superclass.constructor.call(this, name);
+  };
+  S.extend(Dog, Pet, {
+    bark: function() {
+      return this.name + ': bark! bark! bark!';
+    }
+  });
+
+  var dog = new Dog('Bindy');
+  Node.one('#s-extend-output').html(dog.walk() + '<br>' + dog.bark());
+});
+
+/**
+ * S.extend from Base
+ */
+KISSY.use('node, base', function(S, Node, Base) {
+  function Dog() {
+    Dog.superclass.constructor.call(this, Array.prototype.slice(arguments));
+  }
+  Dog.ATTRS = {
+    name: {
+      value: 'WLGC',
+      getter: function(name) {
+        return name + ' the Dog!';
+      },
+      setter: function(name) {
+        return name;
+      }
+    }
+  };
+  S.extend(Dog, Base);
+
+  var dog = new Dog();
+  dog.set('name', '我家潘潘');
+  Node.one('#s-extend-base').html(dog.get('name'));
+});
+
+/**
+ * RichBase.extend (Base.extend in KISSY 1.4)
+ */
+KISSY.use('node, base', function(S, Node, Base) {
+  var result = '';
+
+  var Dog = Base.extend({
+    initializer: function() {
+      result += 'Dog init<br>';
+    }
+  });
+
+  var BigDog = Dog.extend({
+    initializer: function() {
+      result += 'BigDog init\n'
+    }
+  });
+
+  var Barkable = Base.extend({
+    bark: function() {
+      result += 'bark! (volume:' + this.get('volume' + ')');
+    }
+  }, {
+    ATTRS: {
+      volume: { value: 100 }
+    }
+  });
+
+  var bigdog = new BigDog();
+  bigdog.plug(new Barkable({volume: 200}));
+
+  Node.one('#rich-extend-output').html(result);
+});
+
+window.onload = function() {
+  alert('s');
+};
+</script>
+</body>
+</html>

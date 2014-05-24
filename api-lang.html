@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Lang API</title>
+</head>
+<body>
+  <div id="find-me"></div>
+
+<script src="http://g.tbcdn.cn/kissy/k/1.4.3/seed.js" data-config="{combine:true}"></script>
+<script>
+KISSY.use('', function(S) {
+  // S.available
+  S.available('find-me', function() {
+    console.log('Hello!');
+  });
+  
+  // S.bind
+  (S.bind(function() {console.log(this + arguments[0])}, 'a', 'b'))();
+
+  // S.buffer
+  var fnBufferred = S.buffer(function() { 
+    console.log('Should be called after 150ms~');
+  }, 1000, null);
+  fnBufferred();
+  fnBufferred();
+  fnBufferred();
+
+
+  // S.inArray
+  console.log('in array1:', S.inArray('e', ['a', 'e']));
+  console.log('in array1:', S.inArray({a:1,b:{c:2}}, [{a:1,b:{c:2}}])); //test deep equal
+
+  // S.map
+  [1, 2, 3].map(function(v, k) {
+    console.log('S.map:'+k+'->'+v);
+  });
+
+  // S.unique
+  console.log('S.unique: ' + S.unique([1, 1, 2]));
+  console.log('S.unique: ' + S.unique([{a:1}, {a:1}])); //deep equal?
+});
+</script>
+</body>
+</html>
