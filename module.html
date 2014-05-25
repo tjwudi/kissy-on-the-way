@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Module - the HARRRRD PART</title>
+</head>
+<body>
+
+<script src="http://g.tbcdn.cn/kissy/k/1.4.3/seed.js" data-config="{combine:true}"></script>
+<script>
+KISSY.add('dog', function(S, Base) {
+  var Dog = Base.extend({
+    bark: function() {
+      console.log('bark!');
+    }
+  });
+  return Dog;
+}, {
+  requires: ['base']
+});
+
+KISSY.use('base', function(S, Base) {
+  KISSY.add('cat', function(S) {
+    var Base = S.require('base'),
+      Cat = Base.extend({
+        miao: function() {
+          console.log('miao~');
+        }
+      });
+      return Cat;
+  });
+});
+
+
+KISSY.use('dog, cat', function(S, Dog, Cat) {
+  var dog = new Dog();
+  dog.bark();
+
+  var cat = new Cat();
+  cat.miao();
+});
+</script>
+</body>
+</html>
