@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title></title>
+</head>
+<body>
+
+<div class="container">
+  <button id="btn">Click Me!</button>  
+</div>
+<div>
+  <p id="to-fade">lorem</p>
+</div>
+
+<script src="http://g.tbcdn.cn/kissy/k/1.4.3/seed.js" data-config="{combine:true}"></script>
+<script>
+KISSY.config('debug', false);
+
+KISSY.use('event, node', function(S, Event, Node) {
+  Event.on('#btn', 'click', function(e) {
+    var newNode = new Node('<p>I have an idea!</p>');
+    newNode.appendTo('.container');
+  });
+  Event.on('#btn', 'click', function(e) {
+    Node.all('#to-fade').fadeOut();
+  });
+});
+</script>
+</body>
+</html>
